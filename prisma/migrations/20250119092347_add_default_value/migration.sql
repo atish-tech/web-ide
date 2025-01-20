@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Project" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "storage_url" SET DEFAULT '';
