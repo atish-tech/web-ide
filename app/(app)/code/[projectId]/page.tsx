@@ -11,7 +11,7 @@ interface CodePageProps {
 }
 
 export default async function Code({ params }: CodePageProps) {
-  const { projectId } = params;
+  const { projectId } = await params;
 
   const user: ClerkUser | null = await currentUser();
 
