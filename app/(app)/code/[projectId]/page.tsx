@@ -2,23 +2,22 @@ import { prisma } from "@/lib/prisma";
 import { currentUser, User as ClerkUser } from "@clerk/nextjs/server";
 import { Project, User } from "@prisma/client";
 import { redirect } from "next/navigation";
-import Editor2 from "@/components/code/CodeEditor";
 import { head, list, ListBlobResult } from "@vercel/blob";
-import CodeEditor from "@/components/code/CodeEditor";
 import { ProjectFileType } from "@/lib/types";
+import CodeEditor from "@/components/code/CodeEditor";
 
-export default async function Code({
-  params,
-}: {
-  params: { projectId: string };
-}) {
+interface CodePageProps {
+  params: any;
+}
+
+export default async function Code({ params }: CodePageProps) {
+  const { projectId } = params;
+
   const user: ClerkUser | null = await currentUser();
 
   if (!user) {
     redirect("/sign-in");
   }
-
-  const { projectId }: { projectId: string } = await params;
 
   const dbUser: User | null = await prisma.user.findFirst({
     where: {

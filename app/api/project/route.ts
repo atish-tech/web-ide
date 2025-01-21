@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 import { FileType, ProjectType } from "@/lib/types";
 
-export async function POST(req: NextRequest, res: Response) {
+export async function POST(req: NextRequest) {
   const body = await req.json();
 
   const project: Project = await prisma.project.create({
