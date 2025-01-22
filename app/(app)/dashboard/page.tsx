@@ -1,4 +1,5 @@
 import { Dashboard } from "@/components/Dashboard";
+import Navbar from "@/components/dashboard/Navbar";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import { currentUser, User as ClerkUser } from "@clerk/nextjs/server";
@@ -35,6 +36,8 @@ export default async function () {
 
   return (
     <div className="w-screen h-screen flex flex-col overflow-hidden overscroll-none">
+      <Navbar userData={dbUser} />
+
       <Dashboard projects={project} />
     </div>
   );

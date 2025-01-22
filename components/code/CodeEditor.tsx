@@ -144,7 +144,7 @@ const CodeEditor = ({ files }: { files: ProjectFileType[] }) => {
 
         {activeFile && (
           <Editor
-            height="90vh"
+            height="100%"
             language={getLanguageFromFileExtension(activeFile.path)}
             value={fileContents[activeFile.path]}
             theme="vs-dark"
