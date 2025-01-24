@@ -51,7 +51,7 @@ export default async function Code({ params }: CodePageProps) {
 
   return (
     <>
-      <CodeEditor files={files} />
+      <CodeEditor files={files} user={dbUser} />
     </>
   );
 }

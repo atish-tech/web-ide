@@ -17,7 +17,7 @@ const FileTree: React.FC<FileTreeProps> = ({ files, onSelectFile }) => {
   };
 
   return (
-    <div className="w-full bg-zinc-800 border-r-2 p-3">
+    <div className="w-full h-full bg-zinc-800 border-r-2 p-3">
       <ul className="list-none p-0">{renderFileTree(fileTree)}</ul>
     </div>
   );

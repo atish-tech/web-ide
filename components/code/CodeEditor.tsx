@@ -10,8 +10,21 @@ import { Dot, FilesIcon, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { GoDotFill } from "react-icons/go";
+import XTerm from "./Terminal";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "../ui/resizable";
+import { Navbar } from "./Navbar";
+import { User } from "@prisma/client";
 
-const CodeEditor = ({ files }: { files: ProjectFileType[] }) => {
+interface CodeEditorProps {
+  files: ProjectFileType[];
+  user: User;
+}
+
+const CodeEditor = ({ files, user }: CodeEditorProps) => {
   const [openFiles, setOpenFiles] = useState<ProjectFileType[]>([files[0]]);
   const [activeFile, setActiveFile] = useState<ProjectFileType | null>(
     files[0]
@@ -95,65 +108,72 @@ const CodeEditor = ({ files }: { files: ProjectFileType[] }) => {
   }
 
   return (
-    <div className="flex h-screen">
+    <ResizablePanelGroup className="flex h-screen" direction="horizontal">
       {/* file tree */}
-      {isFileTreeVisible && (
-        <div className="w-1/6">
-          <FileTree files={files} onSelectFile={handleFileSelect} />
-        </div>
-      )}
+      <ResizablePanel defaultSize={65} className="w-full flex h-screen">
+        <Navbar
+          toggleFileTreeVisibility={toggleFileTreeVisibility}
+          user={user}
+          isFileTreeVisible
+        />
 
-      <div
-        className={`flex flex-col ${
-          isFileTreeVisible ? "w-4/5" : "w-full"
-        } p-4`}
-      >
-        <div className="flex space-x-2  mb-2">
-          {/* hide or unhide file */}
-          <Button
-            size="icon"
-            variant="secondary"
-            onClick={toggleFileTreeVisibility}
-            className="text-gray-500"
-          >
-            {isFileTreeVisible ? <FaChevronLeft /> : <FaChevronRight />}
-          </Button>
-
-          {/* active files */}
-          {openFiles.map((file) => (
-            <div
-              key={file.path}
-              className={`px-2 cursor-pointer flex items-center justify-center gap-[2px] rounded-sm ${
-                activeFile?.path === file.path ? "bg-zinc-800" : "bg-zinc-900"
-              }`}
-              onClick={() => setActiveFile(file)}
-            >
-              <p className="text-sm">{file.path.split("/").pop()}</p>
-
-              {fileModified[file.path] && <GoDotFill />}
-
-              <button
-                onClick={() => handleTabClose(file)}
-                className=" text-red-200 hover:bg-transparent/30 p-[2px] rounded-sm"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          ))}
-        </div>
-
-        {activeFile && (
-          <Editor
-            height="100%"
-            language={getLanguageFromFileExtension(activeFile.path)}
-            value={fileContents[activeFile.path]}
-            theme="vs-dark"
-            onChange={handleEditorChange}
-            className="border flex-grow"
-          />
+        {isFileTreeVisible && (
+          <div className="w-1/5 h-full">
+            <FileTree files={files} onSelectFile={handleFileSelect} />
+          </div>
         )}
-      </div>
-    </div>
+
+        {/* code editor */}
+        <div className={`flex flex-col h-full w-4/5 pt-1`}>
+          {/* active files */}
+          <div className="flex w-full">
+            <div className="flex space-x-2 py-1  w-full overflow-auto">
+              {openFiles.map((file) => (
+                <div
+                  key={file.path}
+                  className={`pl-2 pr-1 py-1 cursor-pointer flex items-center hover:bg-zinc-800 justify-center gap-[2px] rounded-sm ${
+                    activeFile?.path === file.path
+                      ? "bg-zinc-700/55"
+                      : "bg-zinc-800/55"
+                  }`}
+                  onClick={() => setActiveFile(file)}
+                >
+                  <p className="text-sm">{file.path.split("/").pop()}</p>
+
+                  {fileModified[file.path] && <GoDotFill />}
+
+                  <button
+                    onClick={() => handleTabClose(file)}
+                    className=" text-red-200 hover:bg-transparent/30 p-[2px] rounded-sm"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {activeFile && (
+            <Editor
+              height="100%"
+              language={getLanguageFromFileExtension(activeFile.path)}
+              value={fileContents[activeFile.path]}
+              theme="vs-dark"
+              onChange={handleEditorChange}
+              className="border flex-grow"
+            />
+          )}
+        </div>
+      </ResizablePanel>
+
+      <ResizableHandle withHandle />
+
+      {/* terminal */}
+      <ResizablePanel defaultSize={35} className="w-full flex-grow h-full">
+        <XTerm />
+      </ResizablePanel>
+    </ResizablePanelGroup>
+    // </div>
   );
 };
 
