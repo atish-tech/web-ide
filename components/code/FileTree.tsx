@@ -42,7 +42,10 @@ const FileTreeNode: React.FC<FileTreeNodeProps> = ({ node, onSelectFile }) => {
           {isOpen ? <FaFolderOpen /> : <FaFolder />} {node.name}
         </div>
       ) : (
-        <div onClick={() => onSelectFile(node)} className="flex items-center">
+        <div
+          onClick={() => onSelectFile(node)}
+          className="flex items-center text-sm whitespace-nowrap"
+        >
           {React.createElement(getFileIcon(node.name))} {node.name}
         </div>
       )}

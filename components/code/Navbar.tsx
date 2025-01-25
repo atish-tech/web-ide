@@ -16,7 +16,9 @@ export function Navbar({
   return (
     <div className="flex flex-col gap-3 items-center justify-center h-full py-2 bg-zinc-900">
       <div
-        className={` ${isFileTreeVisible && " border-blue-800 border-l-2"} p-2`}
+        className={`p-2 ${
+          isFileTreeVisible ? "border-blue-800 border-l-2" : "border-none"
+        }`}
       >
         <Files
           onClick={toggleFileTreeVisibility}

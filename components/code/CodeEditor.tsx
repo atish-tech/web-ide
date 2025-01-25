@@ -108,26 +108,30 @@ const CodeEditor = ({ files, user }: CodeEditorProps) => {
   }
 
   return (
-    <ResizablePanelGroup className="flex h-screen" direction="horizontal">
-      {/* file tree */}
-      <ResizablePanel defaultSize={65} className="w-full flex h-screen">
+    <ResizablePanelGroup
+      className="flex h-screen w-screen"
+      direction="horizontal"
+    >
+      {/* nav, file-tree, code */}
+      <ResizablePanel defaultSize={65} className="w-screen flex h-screen">
         <Navbar
           toggleFileTreeVisibility={toggleFileTreeVisibility}
           user={user}
-          isFileTreeVisible
+          isFileTreeVisible={isFileTreeVisible}
         />
 
+        {/* file tree */}
         {isFileTreeVisible && (
-          <div className="w-1/5 h-full">
+          <div className="w-1.5/5 h-full">
             <FileTree files={files} onSelectFile={handleFileSelect} />
           </div>
         )}
 
         {/* code editor */}
-        <div className={`flex flex-col h-full w-4/5 pt-1`}>
+        <div className="flex flex-col h-full pt-1 w-full">
           {/* active files */}
           <div className="flex w-full">
-            <div className="flex space-x-2 py-1  w-full overflow-auto">
+            <div className="flex space-x-2 pb-1 px-1 w-full flex-grow overflow-x-auto">
               {openFiles.map((file) => (
                 <div
                   key={file.path}
@@ -138,7 +142,9 @@ const CodeEditor = ({ files, user }: CodeEditorProps) => {
                   }`}
                   onClick={() => setActiveFile(file)}
                 >
-                  <p className="text-sm">{file.path.split("/").pop()}</p>
+                  <p className="text-sm whitespace-nowrap">
+                    {file.path.split("/").pop()}
+                  </p>
 
                   {fileModified[file.path] && <GoDotFill />}
 
@@ -173,7 +179,6 @@ const CodeEditor = ({ files, user }: CodeEditorProps) => {
         <XTerm />
       </ResizablePanel>
     </ResizablePanelGroup>
-    // </div>
   );
 };
 
