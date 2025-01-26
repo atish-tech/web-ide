@@ -24,11 +24,31 @@ const XTerm: React.FC = () => {
         fitAddon.current?.fit();
       });
 
+      // Handle terminal input
+      terminal.current.onData((data) => {
+        handleTerminalInput(data);
+      });
+
       return () => {
         terminal.current?.dispose();
       };
     }
   }, []);
+
+  function handleTerminalInput(data: string): void {
+    if (data === "\r") {
+      // Enter key
+      terminal.current?.writeln("");
+    } else if (data === "\u0003") {
+      // Ctrl+C
+      terminal.current?.writeln("^C");
+    } else if (data === "\u007F") {
+      // Backspace key
+      terminal.current?.write("\b \b");
+    } else {
+      terminal.current?.write(data);
+    }
+  }
 
   return <div ref={terminalRef} style={{ height: "100%", width: "100%" }} />;
 };

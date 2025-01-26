@@ -18,6 +18,7 @@ import {
 } from "../ui/resizable";
 import { Navbar } from "./Navbar";
 import { User } from "@prisma/client";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 interface CodeEditorProps {
   files: ProjectFileType[];
@@ -123,7 +124,10 @@ const CodeEditor = ({ files, user }: CodeEditorProps) => {
         {/* file tree */}
         {isFileTreeVisible && (
           <div className="w-1.5/5 h-full">
-            <FileTree files={files} onSelectFile={handleFileSelect} />
+            <ScrollArea className="h-screen">
+              <FileTree files={files} onSelectFile={handleFileSelect} />
+              <ScrollBar orientation="vertical" className="bg-zinc-700" />
+            </ScrollArea>
           </div>
         )}
 
@@ -131,7 +135,8 @@ const CodeEditor = ({ files, user }: CodeEditorProps) => {
         <div className="flex flex-col h-full pt-1 w-full">
           {/* active files */}
           <div className="flex w-full">
-            <div className="flex space-x-2 pb-1 px-1 w-full flex-grow overflow-x-auto">
+            <div className=" pb-1 px-1 max-w-fit flex gap-2 overflow-auto tab-scroll">
+              {/* <ScrollArea className="flex space-x-2 pb-1 px-1 w-full "> */}
               {openFiles.map((file) => (
                 <div
                   key={file.path}
@@ -156,6 +161,8 @@ const CodeEditor = ({ files, user }: CodeEditorProps) => {
                   </button>
                 </div>
               ))}
+              {/* <ScrollBar orientation="vertical" />
+            </ScrollArea> */}
             </div>
           </div>
 
@@ -166,7 +173,7 @@ const CodeEditor = ({ files, user }: CodeEditorProps) => {
               value={fileContents[activeFile.path]}
               theme="vs-dark"
               onChange={handleEditorChange}
-              className="border flex-grow"
+              className=" "
             />
           )}
         </div>
@@ -175,7 +182,11 @@ const CodeEditor = ({ files, user }: CodeEditorProps) => {
       <ResizableHandle withHandle />
 
       {/* terminal */}
-      <ResizablePanel defaultSize={35} className="w-full flex-grow h-full">
+      <ResizablePanel
+        defaultSize={35}
+        minSize={20}
+        className="w-full flex-grow h-full"
+      >
         <XTerm />
       </ResizablePanel>
     </ResizablePanelGroup>
