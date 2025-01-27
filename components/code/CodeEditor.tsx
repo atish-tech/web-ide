@@ -19,6 +19,7 @@ import {
 import { Navbar } from "./Navbar";
 import { User } from "@prisma/client";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { ProjectPreview } from "./ProjectPreview";
 
 interface CodeEditorProps {
   files: ProjectFileType[];
@@ -181,13 +182,26 @@ const CodeEditor = ({ files, user }: CodeEditorProps) => {
 
       <ResizableHandle withHandle />
 
-      {/* terminal */}
+      {/* terminal, project preview */}
       <ResizablePanel
         defaultSize={35}
         minSize={20}
         className="w-full flex-grow h-full"
       >
-        <XTerm />
+        <ResizablePanelGroup className="h-screen w-full" direction="vertical">
+          <ResizablePanel defaultSize={50} minSize={20}>
+            <ProjectPreview />
+            {/* <XTerm /> */}
+          </ResizablePanel>
+
+          <ResizableHandle withHandle />
+
+          <ResizablePanel defaultSize={50} minSize={20}>
+            {/* <XTerm /> */}
+            <ProjectPreview />
+          </ResizablePanel>
+        </ResizablePanelGroup>
+        {/* <ProjectPreview /> */}
       </ResizablePanel>
     </ResizablePanelGroup>
   );
