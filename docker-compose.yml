@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  nextapp:
+    container_name: web_ide
+    image: web_ide
+    build: .
+    ports:
+      - "3000:3000"
