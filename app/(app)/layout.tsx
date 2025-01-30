@@ -25,7 +25,7 @@ export default async function DashboardLayout({
   if (!dbUser) {
     await prisma.user.create({
       data: {
-        name: user.fullName || user.emailAddresses[0].emailAddress,
+        name: user.fullName || user.emailAddresses[0].emailAddress, 
         email: user.emailAddresses[0].emailAddress,
       },
     });

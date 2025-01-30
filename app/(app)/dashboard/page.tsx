@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 
 export default async function () {
   const user: ClerkUser | null = await currentUser();
-
+ 
   if (!user) {
     redirect("/");
   }
